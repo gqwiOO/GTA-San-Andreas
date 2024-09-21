@@ -26,4 +26,5 @@ MonoBehaviour:
   walkToRunTranslation: 1
   maxRotationDegreesDelta: 10
   walkMaxAnimValue: 0.5
-  enemyWalkMaxSpeed: 280
+  enemyWalkMaxSpeed: 240
+  walkSpeedSelectRange: 50

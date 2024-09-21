@@ -12,18 +12,18 @@ namespace Game.Scripts.Entity.Attacking
         [SerializeField] private Animator animator;
         [SerializeField] private AttackCollider meleeCollider;
         [SerializeField] private AttackCollider rangeCollider;
-
-        protected void AttackMelee()
+        public void AttackMelee(AttackData attackData)
         {
             animator.SetFloat(AnimatorId.AttackType, AttackTypes.MeleeAttack);
             animator.SetTrigger(AnimatorId.AttackTrigger);
-            meleeCollider.SetAttackData(new AttackData(50,gameObject));
+            meleeCollider.SetAttackData(attackData);
         }
 
-        protected void MagicAttack()
+        public void MagicAttack(AttackData attackData)
         {
             animator.SetFloat(AnimatorId.AttackType, AttackTypes.MagicAttack);
             animator.SetTrigger(AnimatorId.AttackTrigger);
+            rangeCollider.SetAttackData(attackData);
         }
     }
 }

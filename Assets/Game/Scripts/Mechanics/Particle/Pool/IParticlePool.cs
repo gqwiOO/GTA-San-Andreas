@@ -5,6 +5,6 @@ namespace Game.Scripts.Mechanics.Particle.Pool
 {
     public interface IParticlePool
     {
-        ParticleSystem GetParticle(ParticleId id, Vector3 position, Quaternion rotation);
+        ParticleSystem GetParticle(ParticleId id, Vector3 position, Quaternion rotation, Transform tempParent = null);
     }
 }

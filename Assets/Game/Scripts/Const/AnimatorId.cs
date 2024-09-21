@@ -5,5 +5,6 @@
         public static readonly string Velocity = "Velocity";
         public static readonly string AttackType = "AttackType";
         public static readonly string AttackTrigger = "Attack";
+        public static readonly string DiedTrigger = "Die";
     }
 }

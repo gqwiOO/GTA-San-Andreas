@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Game.Scripts.Const;
 using Game.Scripts.Mechanics.Combat.Data;
 using Game.Scripts.Mechanics.Hp;
 using UnityEngine;
@@ -13,11 +14,11 @@ namespace Game.Scripts.Mechanics
         [SerializeField] protected Animator animator;
 
         [SerializeField] protected Rigidbody2D rb;
-        
-        protected IHp _hpSystem;
+
+        private IHp _hpSystem;
         
         public IHp HpSystem => _hpSystem;
-        public AttackData AttackData { get; private set; }
+        private AttackData AttackData { get; set; }
         public AttackObjectData AttackObjectData { get; private set; }
         public bool IsDead { get; private set; }
 
@@ -34,18 +35,11 @@ namespace Game.Scripts.Mechanics
         }
         protected virtual void ValidateHook() { }
 
-        private void Start()
-        {
-            Init(new AttackObjectData(200));
-        }
-
         public void Init(AttackObjectData attackObjectData)
         {
             _hpSystem = new Hp.Hp(attackObjectData.MaxHp);
 
             AttackObjectData = attackObjectData;
-
-            CanReceivePunch = true;
 
             // _canReceiveDamageFrom = attackObjectData.CanReceiveDamageFrom;
             InitHook();
@@ -112,7 +106,7 @@ namespace Game.Scripts.Mechanics
         private void Die()
         {
             DieHook();
-            // animator.SetTrigger(AnimatorId.DiedTrigger);
+            animator.SetTrigger(AnimatorId.DiedTrigger);
             OnDied?.Invoke(this);
             IsDead = true;
         }

@@ -1,5 +1,6 @@
 ﻿using Game.Scripts.Factories;
 using Game.Scripts.Mechanics.Combat.Attack;
+using Game.Scripts.Mechanics.Particle;
 using Game.Scripts.Mechanics.Particle.Pool;
 using Unity.Mathematics;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Game.Scripts.Entity.Attacking
         [SerializeField] private AttackCollider meleeCollider;
         [SerializeField] private AttackCollider rangeCollider;
 
+        [SerializeField] private Vector3 swordParticlesAdditivePos = new Vector3(0,2,0);
         [Inject]
         private void Construct(IParticlePool particlePool)
         {
@@ -23,7 +25,7 @@ namespace Game.Scripts.Entity.Attacking
         
         public void SwordAttackStarted()
         {
-            _particlePool.GetParticle(ParticleId.SwordSmash, transform.position, rotationParent.rotation);
+            _particlePool.GetParticle(ParticleId.SwordSmash, transform.position + swordParticlesAdditivePos, rotationParent.rotation);
             meleeCollider.Activate();
         }
         

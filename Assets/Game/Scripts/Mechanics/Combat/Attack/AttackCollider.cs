@@ -1,5 +1,4 @@
-﻿using System;
-using Game.Scripts.Mechanics.Combat.ReceiveDamage;
+﻿using Game.Scripts.Mechanics.Combat.ReceiveDamage;
 using UnityEngine;
 
 namespace Game.Scripts.Mechanics.Combat.Attack
@@ -15,10 +14,7 @@ namespace Game.Scripts.Mechanics.Combat.Attack
             StartHook();
         }
 
-        protected virtual void StartHook()
-        {
-            
-        }
+        protected virtual void StartHook() { }
 
         public void SetAttackData(AttackData attackData) => _attackData = attackData;
 

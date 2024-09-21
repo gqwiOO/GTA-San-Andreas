@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Scripts.Containers;
 using Game.Scripts.Factories;
@@ -54,7 +55,7 @@ namespace Game.Scripts.Mechanics.Particle.Pool
             return particleInstance;
         }
 
-        public ParticleSystem GetParticle(ParticleId id, Vector3 position, Quaternion rotation)
+        public ParticleSystem GetParticle(ParticleId id, Vector3 position, Quaternion rotation, Transform tempParent = null)
         {
             if (pools[id].Count == 0)
             {
@@ -66,16 +67,19 @@ namespace Game.Scripts.Mechanics.Particle.Pool
             particle.transform.position = position;
             particle.transform.rotation = rotation;
             particle.gameObject.SetActive(true);
+            if(tempParent != null)
+                tempParent.SetParent(tempParent);
             
             particle.Play();
-
-            WaitUntilEndAsync(id,particle).Forget();
+            
+            WaitUntilEndAsync(id,particle,particle.GetCancellationTokenOnDestroy()).Forget();
             return particle;
         }
 
-        private async UniTask WaitUntilEndAsync(ParticleId id, ParticleSystem particle)
+        private async UniTask WaitUntilEndAsync(ParticleId id, ParticleSystem particle,
+            CancellationToken cancellationTokenOnDestroy)
         {
-            await UniTask.WaitUntil(() => !particle.isPlaying);
+            await UniTask.WaitUntil(() => !particle.isPlaying, cancellationToken:cancellationTokenOnDestroy);
             ReturnParticle(id, particle);
         }
 
@@ -84,6 +88,7 @@ namespace Game.Scripts.Mechanics.Particle.Pool
         {
             particle.Stop();
             particle.gameObject.SetActive(false);
+            particle.transform.SetParent(_parent);
             pools[id].Enqueue(particle);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Game.Scripts.Mechanics.Particle;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -9,5 +10,6 @@ namespace Game.Scripts.Factories.Config
     {
         public Dictionary<ParticleId, ParticleSystem> particles;
         public int initialSize = 4;
+
     }
 }

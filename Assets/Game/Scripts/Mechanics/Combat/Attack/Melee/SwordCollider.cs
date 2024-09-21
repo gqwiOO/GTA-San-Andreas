@@ -9,8 +9,7 @@ namespace Game.Scripts.Mechanics.Combat.Attack.Melee
     {
         [SerializeField] private Transform rotatingPoint;
         [SerializeField] private CurrentSideGetter currentSideGetter;
-
-
+        
         private Vector3 _startLocalPosition;
         private float _lastRotatedAngle;
 

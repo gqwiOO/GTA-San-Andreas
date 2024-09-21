@@ -14,5 +14,7 @@ namespace Game.Scripts.Mechanics.Movement.Config
         
         [Header("Enemy")]
         public float enemyWalkMaxSpeed = 2000f;
+
+        public float walkSpeedSelectRange = 50f;
     }
 }

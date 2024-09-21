@@ -42,17 +42,6 @@ namespace Game.Scripts.Player.Movement
             }
             SetAnimationValue(direction.magnitude,direction.magnitude);
         }
-        
-        private void SetAnimationValue(float x, float y, float time = 0.3f)
-        {
-            var joystickAnimationValue = Mathf.Max(Mathf.Abs(x), Mathf.Abs(y));
-            var currentSpeed = animator.GetFloat(AnimatorId.Velocity);
-
-            var animationValue = Mathf.Min(_movementConfig.walkMaxAnimValue, joystickAnimationValue);
-            _lastAnimationValue = Mathf.Lerp(currentSpeed, animationValue, time);
-            animator.SetFloat(AnimatorId.Velocity, _lastAnimationValue);
-        }
-
         private Vector2 GetMoveDirection(float x, float y) => new Vector2(x, y).normalized;
     }
 }
