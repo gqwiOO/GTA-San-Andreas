@@ -21,8 +21,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  walkMaxSpeed: 400
-  minAnimationMoveValue: 0.4
+  walkMaxSpeed: 320
+  minAnimationMoveValue: 0.2
   walkToRunTranslation: 1
   maxRotationDegreesDelta: 10
   walkMaxAnimValue: 0.5
+  enemyWalkMaxSpeed: 280

@@ -1,4 +1,5 @@
-﻿using Game.Scripts.Mechanics.Movement.Data;
+﻿using System;
+using Game.Scripts.Mechanics.Movement.Data;
 using UnityEngine;
 
 namespace Game.Scripts.Mechanics.Movement
@@ -7,6 +8,9 @@ namespace Game.Scripts.Mechanics.Movement
     {
         [SerializeField] private Transform scaleTarget;
 
-        public Side GetSide() => scaleTarget.localScale.x > 0 ? Side.Left : Side.Right;
+        public Side GetSide() => 
+            Math.Abs(scaleTarget.rotation.eulerAngles.y - 180) < 1f
+                ? Side.Right 
+                : Side.Left;
     }
 }

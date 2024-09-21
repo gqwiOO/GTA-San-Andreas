@@ -1,4 +1,4 @@
-﻿namespace Game.Scripts.Player.Movement
+﻿namespace Game.Scripts.Const
 {
     public static class AnimatorId
     {

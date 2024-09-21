@@ -76,3 +76,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementConfig: {fileID: 11400000, guid: f7cadff8311173442a9aeef23a7a593d, type: 2}
   particlesConfig: {fileID: 11400000, guid: 8141a45a8e1a9494596d53cb4742e41f, type: 2}
+  enemyConfig: {fileID: 11400000, guid: fe4f799ec9980ce4ca9717c6a9f94b6f, type: 2}

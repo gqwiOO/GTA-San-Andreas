@@ -12,8 +12,8 @@ TagManager:
   - Entities
   - Water
   - UI
-  - 
-  - 
+  - AttackCollider
+  - ReceiveDamageCollider
   - 
   - 
   - 

@@ -12,7 +12,7 @@ namespace Game.Scripts.Mechanics.Hp
         
         public event Action<float> OnPercentHpChanged;
 
-        public void Init(int MaxHp)
+        public Hp(int MaxHp)
         {
             MaxValue = MaxHp;
             Current = MaxValue;
