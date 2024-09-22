@@ -8,11 +8,11 @@ namespace Game.Scripts.Mechanics.Combat.ReceiveDamage
     {
         [SerializeField] private AttackObject attackObject;
 
-        public TeamTag TeamTag => attackObject.AttackObjectData.TeamTag;
+        public TeamTag TeamTag => attackObject.EntityData.TeamTag;
         
         public void ReceiveAttackData(AttackData attackData)
         {
-            if (attackData == null || !attackObject.AttackObjectData.canReceiveDamageFrom.Contains(attackData.TeamTag))
+            if (attackData == null || !attackObject.EntityData.canReceiveDamageFrom.Contains(attackData.TeamTag))
                 return;
             attackObject.TriggerDamage(attackData);
         }

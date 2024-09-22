@@ -6,5 +6,6 @@ namespace Game.Scripts.Containers
     {
         [field: SerializeField] public Transform ParticlesParent { get; private set; }
         [field: SerializeField] public Transform ArrowParent { get; private set; }
+        [field: SerializeField] public Transform EntityContainer { get; private set; }
     }
 }

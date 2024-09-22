@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Scripts.Enemy.Config;
+using Game.Scripts.Mechanics.Combat.Data;
 using Game.Scripts.Mechanics.Movement;
 using Game.Scripts.Services.PlayerProvider;
 using UnityEngine;
@@ -17,7 +18,6 @@ namespace Game.Scripts.Enemy
 
         private float _moveSpeed;
 
-        public MoveResult MoveResult { get; private set; }
 
         [Inject]
         private void Construct(IPlayerProvider playerProvider, GlobalEnemyConfig globalEnemyConfig)
@@ -30,7 +30,6 @@ namespace Game.Scripts.Enemy
         {
             _moveSpeed = Random.Range(_movementConfig.enemyWalkMaxSpeed - _movementConfig.walkSpeedSelectRange,
                 _movementConfig.enemyWalkMaxSpeed + _movementConfig.walkSpeedSelectRange);
-            MoveResult = MoveResult.Cancelled;
         }
 
         public async UniTask MoveTowardPlayer(AttackState attackState, CancellationToken token)
@@ -39,7 +38,11 @@ namespace Game.Scripts.Enemy
             await Move(distanceToDestination, token);
         }
 
-        public void ResetVelocity() => rb.velocity = Vector2.zero;
+        public void ResetVelocity()
+        {
+            rb.velocity = Vector2.zero;
+            SetAnimationValue(0,0,1F);
+        }
 
         private async UniTask Move(float distanceToDestination, CancellationToken token)
         {
@@ -52,18 +55,9 @@ namespace Game.Scripts.Enemy
                 RotateTowardVector(direction);
                 await UniTask.NextFrame(cancellationToken: token);
             }
-
-            Debug.Log(GetDistanceToDestination(_playerProvider.Position));
-
+            
             SetVelocity(Vector2.zero);
             SetAnimationValue(0, 0, 1f);
-            MoveResult = MoveResult.OnDestination;
         }
-    }
-
-    public enum MoveResult
-    {
-        OnDestination,
-        Cancelled
     }
 }

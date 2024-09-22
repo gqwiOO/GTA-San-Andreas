@@ -9,7 +9,7 @@ namespace Game.Scripts.Enemy.Factory
     public class EnemyFactory
     {
         private readonly PrefabConfig _prefabConfig;
-        private DiContainer _diContainer;
+        private readonly DiContainer _diContainer;
 
         [Inject]
         public EnemyFactory(PrefabConfig prefabConfig, DiContainer diContainer)
@@ -18,10 +18,10 @@ namespace Game.Scripts.Enemy.Factory
             _prefabConfig = prefabConfig;
         }
         
-        public EnemyAttackObject Create(AttackObjectData attackObjectData, Vector3 position, Transform parent = null)
+        public EnemyAttackObject Create(EntityData entityData, Vector3 position, Transform parent = null)
         {
             var enemyAttackObject = Object.Instantiate(_prefabConfig.EnemyPrefab, position, quaternion.identity,parent);
-            enemyAttackObject.Init(attackObjectData);
+            enemyAttackObject.Init(entityData);
             _diContainer.InjectGameObjectForComponent<EnemyAttackObject>(enemyAttackObject.gameObject);
             return enemyAttackObject;
         }

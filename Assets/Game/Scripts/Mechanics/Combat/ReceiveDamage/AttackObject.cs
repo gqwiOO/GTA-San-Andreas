@@ -14,11 +14,13 @@ namespace Game.Scripts.Mechanics.Combat.ReceiveDamage
 
         [SerializeField] protected Rigidbody2D rb;
 
+        [SerializeField] private int destroyOnDeathTimerSeconds = 20;
+
         private IHp _hpSystem;
         
         public IHp HpSystem => _hpSystem;
         private AttackData AttackData { get; set; }
-        public AttackObjectData AttackObjectData { get; private set; }
+        public EntityData EntityData { get; private set; }
         public bool IsDead { get; private set; }
 
         private bool CanReceivePunch { get; set; }
@@ -34,13 +36,12 @@ namespace Game.Scripts.Mechanics.Combat.ReceiveDamage
         }
         protected virtual void ValidateHook() { }
 
-        public void Init(AttackObjectData attackObjectData)
+        public void Init(EntityData entityData)
         {
-            _hpSystem = new Hp.Hp(attackObjectData.MaxHp);
+            _hpSystem = new Hp.Hp(entityData.MaxHp);
+            Debug.Log($"maxHp : {entityData.MaxHp}");
+            EntityData = entityData;
 
-            AttackObjectData = attackObjectData;
-
-            // _canReceiveDamageFrom = attackObjectData.CanReceiveDamageFrom;
             InitHook();
         }
 
@@ -78,10 +79,7 @@ namespace Game.Scripts.Mechanics.Combat.ReceiveDamage
 
         public void TriggerDamage(AttackData attackData)
         {
-            // if (!CanBeAttacked || !_canReceiveDamageFrom.Contains(attackData.AttackerTeamTag))
-                // return;
             AttackData = attackData;
-
             ReceiveDamage(attackData);
         }
 
@@ -105,11 +103,19 @@ namespace Game.Scripts.Mechanics.Combat.ReceiveDamage
         private void Die()
         {
             DieHook();
+            
             animator.SetTrigger(AnimatorId.DiedTrigger);
             OnDied?.Invoke(this);
             IsDead = true;
+            DestroyOnTimerAsync().Forget();
         }
 
         protected virtual void DieHook() { }
+
+        private async UniTask DestroyOnTimerAsync()
+        {
+            await UniTask.Delay(destroyOnDeathTimerSeconds * 1000, cancellationToken: gameObject.GetCancellationTokenOnDestroy());
+            Destroy(gameObject);
+        }
     }
 }

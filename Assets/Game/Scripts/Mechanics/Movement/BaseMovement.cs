@@ -70,10 +70,6 @@ namespace Game.Scripts.Mechanics.Movement
             animator.SetFloat(AnimatorId.Velocity, _lastAnimationValue);
         }
 
-        protected float GetDistanceToDestination(Vector3 destination)
-        {
-            Debug.Log($"Destination : {destination}, position : {transform.position}");
-            return Vector3.Distance(transform.position, destination);
-        }
+        protected float GetDistanceToDestination(Vector3 destination) => Vector3.Distance(transform.position, destination);
     }
 }

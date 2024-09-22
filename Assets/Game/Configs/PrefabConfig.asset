@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ArrowPrefab>k__BackingField: {fileID: 1817897171089147876, guid: 3c3b23338608939449229d02ec112a44, type: 3}
   <EnemyPrefab>k__BackingField: {fileID: 5926912511054369998, guid: 26313c51375d4cb41be16a7b2aff62af, type: 3}
+  <PlayerPrefab>k__BackingField: {fileID: 3506381026380097144, guid: 4514ebfa988b39246bddf4aa08b878a9, type: 3}

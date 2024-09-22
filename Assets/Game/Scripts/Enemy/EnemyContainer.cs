@@ -2,7 +2,6 @@
 using System.Linq;
 using Game.Scripts.Enemy.Config;
 using Game.Scripts.Enemy.Factory;
-using Game.Scripts.Mechanics;
 using Game.Scripts.Mechanics.Combat.ReceiveDamage;
 using Game.Scripts.Mechanics.Level;
 using Game.Scripts.Services.PlayerProvider;
@@ -49,7 +48,7 @@ namespace Game.Scripts.Enemy
             {
                 var spawnPosition = _playerProvider.Position + Random.insideUnitSphere * _levelConfig.enemySpawnRadius;
                 spawnPosition.z = 0;
-                var instance = _enemyFactory.Create(_enemyConfig.AttackObjectData,spawnPosition,transform);
+                var instance = _enemyFactory.Create(_enemyConfig.entityData,spawnPosition,transform);
                 Add(instance);
             }
         }

@@ -71,11 +71,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  attackDelayMilliseconds: 1500
-  meleeDamage: 10
-  rangeDamage: 8
+  attackDelayMilliseconds: 1000
   rangeEnemyChange: 0.3
-  AttackObjectData:
+  entityData:
     <MaxHp>k__BackingField: 200
+    <meleeDamage>k__BackingField: 20
+    <rangeDamage>k__BackingField: 10
     TeamTag: 1
     canReceiveDamageFrom: 00000000

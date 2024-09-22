@@ -1,6 +1,4 @@
-﻿using System;
-using Game.Scripts.Mechanics;
-using Game.Scripts.Mechanics.Combat.ReceiveDamage;
+﻿using Game.Scripts.Mechanics.Combat.ReceiveDamage;
 using Game.Scripts.Mechanics.Hp;
 using UnityEngine;
 

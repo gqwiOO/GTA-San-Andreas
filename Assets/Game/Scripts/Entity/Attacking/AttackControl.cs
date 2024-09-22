@@ -25,13 +25,11 @@ namespace Game.Scripts.Entity.Attacking
         [SerializeField] private GameObject rangeWeapon;
         
         private ArrowPool _arrowPool;
-        private EnemyContainer _enemyContainer;
         private AttackData _attackData;
 
         [Inject]
-        private void Construct(ArrowPool arrowPool, EnemyContainer enemyContainer)
+        private void Construct(ArrowPool arrowPool)
         {
-            _enemyContainer = enemyContainer;
             _arrowPool = arrowPool;
         }
         public void AttackMelee(AttackData attackData)

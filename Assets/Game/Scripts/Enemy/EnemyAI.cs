@@ -1,11 +1,15 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Scripts.Enemy.Config;
 using Game.Scripts.Entity.Attacking;
 using Game.Scripts.Mechanics;
+using Game.Scripts.Mechanics.Combat.Data;
 using Game.Scripts.Mechanics.Combat.ReceiveDamage;
+using Game.Scripts.Services.PlayerProvider;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace Game.Scripts.Enemy
 {
@@ -18,28 +22,55 @@ namespace Game.Scripts.Enemy
         private GlobalEnemyConfig _globalEnemyConfig;
 
         private CancellationTokenSource _disableAiCancellationTokenSource;
+        private IPlayerProvider _playerProvider;
 
         public AttackState AttackState { get; private set; }
 
         [Inject]
-        private void Construct(GlobalEnemyConfig globalEnemyConfig)
+        private void Construct(GlobalEnemyConfig globalEnemyConfig, IPlayerProvider playerProvider)
         {
+            _playerProvider = playerProvider;
             _globalEnemyConfig = globalEnemyConfig;
         }
 
         private void Start()
         {
             _disableAiCancellationTokenSource = new CancellationTokenSource();
-            attackObject.OnDied += DisableLogic_OnDied;
 
-            AttackState = Random.Range(0, 1f) < _globalEnemyConfig.rangeEnemyChange ? AttackState.Range : AttackState.Melee;
-            // AttackState = AttackState.Melee;
-            AttackState = AttackState.Range;
+            var tokenSource = CancellationTokenSource.CreateLinkedTokenSource(_disableAiCancellationTokenSource.Token,
+                gameObject.GetCancellationTokenOnDestroy());
             
-            AiLogic(_disableAiCancellationTokenSource.Token).Forget();
+            Subscriptions();
+
+            SetAttackState();
+            
+            AiLogic(tokenSource.Token).Forget();
             
             attackControl.SetWeapon(AttackState == AttackState.Melee);
-            
+        }
+
+        private void Subscriptions()
+        {
+            attackObject.OnDied += DisableLogic_OnDied;
+            _playerProvider.OnDied += DisableLogic_OnDied;
+        }
+
+        private void OnDestroy()
+        {
+            Unsubscriptions();
+        }
+
+        private void Unsubscriptions()
+        {
+            attackObject.OnDied -= DisableLogic_OnDied;
+            _playerProvider.OnDied -= DisableLogic_OnDied;
+        }
+        
+        private void SetAttackState()
+        {
+            AttackState = Random.Range(0, 1f) < _globalEnemyConfig.rangeEnemyChange 
+                ? AttackState.Range 
+                : AttackState.Melee;
         }
 
         private void DisableLogic_OnDied(AttackObject _)
@@ -50,31 +81,22 @@ namespace Game.Scripts.Enemy
 
         private async UniTask AiLogic(CancellationToken token)
         {
+            await UniTask.WaitUntil(() => _playerProvider.Initialized, cancellationToken: token);
             while (true)
             {
                 await enemyMovement.MoveTowardPlayer(AttackState, token);
-                if (enemyMovement.MoveResult == MoveResult.OnDestination)
-                {
-                    Attack();
-                    Debug.Log("OnDestination");
-                }
+                Attack();
 
-                await UniTask.Yield( cancellationToken: token);
+                await UniTask.Delay(_globalEnemyConfig.attackDelayMilliseconds, cancellationToken: token);
             }
         }
 
         private void Attack()
         {
             if(AttackState == AttackState.Range)
-                attackControl.RangeAttack(new AttackData(_globalEnemyConfig.rangeDamage,this.gameObject,_globalEnemyConfig.AttackObjectData.TeamTag));
+                attackControl.RangeAttack(new AttackData(_globalEnemyConfig.entityData.rangeDamage,this.gameObject,_globalEnemyConfig.entityData.TeamTag));
             else
-                attackControl.AttackMelee(new AttackData(_globalEnemyConfig.meleeDamage,this.gameObject,_globalEnemyConfig.AttackObjectData.TeamTag));
+                attackControl.AttackMelee(new AttackData(_globalEnemyConfig.entityData.meleeDamage,this.gameObject,_globalEnemyConfig.entityData.TeamTag));
         }
-    }
-
-    public enum AttackState
-    {
-        Melee,
-        Range
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Game.Scripts.Mechanics.Combat.Data;
-using Game.Scripts.Player.Config;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Game.Scripts.Enemy.Config
 {
@@ -12,10 +12,8 @@ namespace Game.Scripts.Enemy.Config
         public Dictionary<AttackState, float> attackDistance = new();
         public int attackDelayMilliseconds = 1000;
 
-        public float meleeDamage = 10;
-        public float rangeDamage = 8;
         public float rangeEnemyChange = 0.3f;
 
-        public AttackObjectData AttackObjectData;
+        [FormerlySerializedAs("AttackObjectData")] public EntityData entityData;
     }
 }
