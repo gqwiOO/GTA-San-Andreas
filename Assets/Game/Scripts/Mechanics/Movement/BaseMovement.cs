@@ -14,7 +14,9 @@ namespace Game.Scripts.Mechanics.Movement
         [SerializeField] private float rotateAccuracy = 0.1f;
 
         private Side _currentSide = Side.Left;
-        protected float _lastAnimationValue;
+        private float _lastAnimationValue;
+        private bool _isActive = true;
+        
         protected MovementConfig _movementConfig;
 
         [Inject]
@@ -22,12 +24,30 @@ namespace Game.Scripts.Mechanics.Movement
         {
             _movementConfig = movementConfig;
         }
+        
+        public void SetState(bool state) => _isActive =state;
+        protected void SetPosition(Vector2 targetPoint)
+        {
+            if (!_isActive)
+                return;
+            rb.position = targetPoint;
+        }
 
-        protected void SetPosition(Vector2 targetPoint) => rb.position = targetPoint;
-        protected void SetVelocity(Vector2 velocity) => rb.velocity = velocity;
+        protected void SetVelocity(Vector2 velocity)
+        {
+            if (!_isActive)
+            {
+                rb.velocity = Vector2.zero;
+                return;
+            }
+                
+            rb.velocity = velocity;
+        }
 
         protected void RotateTowardVector(Vector2 vector)
         {
+            if (!_isActive)
+                return;
             if (vector.x > rotateAccuracy && _currentSide != Side.Right)
             {
                 rotatedObject.transform.Rotate(new Vector3(0,1,0),180);
@@ -50,7 +70,10 @@ namespace Game.Scripts.Mechanics.Movement
             animator.SetFloat(AnimatorId.Velocity, _lastAnimationValue);
         }
 
-        protected float GetDistanceToDestination(Vector3 destination) =>
-            Vector3.Distance(transform.position, destination);
+        protected float GetDistanceToDestination(Vector3 destination)
+        {
+            Debug.Log($"Destination : {destination}, position : {transform.position}");
+            return Vector3.Distance(transform.position, destination);
+        }
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Game.Scripts.Const;
 using Game.Scripts.Mechanics.Combat.Data;
 using Game.Scripts.Mechanics.Hp;
 using UnityEngine;
 
-namespace Game.Scripts.Mechanics
+namespace Game.Scripts.Mechanics.Combat.ReceiveDamage
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class AttackObject: MonoBehaviour

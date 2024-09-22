@@ -25,17 +25,17 @@ namespace Game.Scripts.Player.Attacking
         private void Subscribe()
         {
             _hudContainer.MeleeAttackButton.onClick.AddListener(MeleeButton_onClick);   
-            _hudContainer.MagicAttackButton.onClick.AddListener(RangeButton_onClick);   
+            _hudContainer.RangeAttackButton.onClick.AddListener(RangeButton_onClick);   
         }
 
-        private void MeleeButton_onClick() => AttackMelee(new AttackData(_playerConfig.meleeDamage,gameObject,_playerConfig.teamTag));
+        private void MeleeButton_onClick() => AttackMelee(new AttackData(_playerConfig.meleeDamage,gameObject,_playerConfig.AttackObjectData.TeamTag));
 
-        private void RangeButton_onClick() => AttackMelee(new AttackData(_playerConfig.rangeDamage,gameObject,_playerConfig.teamTag));
+        private void RangeButton_onClick() => RangeAttack(new AttackData(_playerConfig.rangeDamage,gameObject,_playerConfig.AttackObjectData.TeamTag));
 
         private void Unsubscribe()
         {
             _hudContainer.MeleeAttackButton.onClick.RemoveListener(MeleeButton_onClick);   
-            _hudContainer.MagicAttackButton.onClick.RemoveListener(RangeButton_onClick);   
+            _hudContainer.RangeAttackButton.onClick.RemoveListener(RangeButton_onClick);   
         }
     }
 }

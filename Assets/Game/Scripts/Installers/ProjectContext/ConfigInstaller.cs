@@ -1,6 +1,7 @@
 ﻿using Game.Scripts.Containers;
 using Game.Scripts.Enemy.Config;
 using Game.Scripts.Factories.Config;
+using Game.Scripts.Mechanics.Level;
 using Game.Scripts.Mechanics.Movement.Config;
 using Game.Scripts.Player.Config;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Game.Scripts.Installers.ProjectContext
         [SerializeField] private ParticlesConfig particlesConfig;
         [SerializeField] private PlayerConfig playerConfig;
         [SerializeField] private PrefabConfig prefabConfig;
+        [SerializeField] private LevelConfig levelConfig;
         [FormerlySerializedAs("enemyConfig")] [SerializeField] private GlobalEnemyConfig globalEnemyConfig;
 
         public override void InstallBindings()
@@ -24,6 +26,7 @@ namespace Game.Scripts.Installers.ProjectContext
             Container.Bind<GlobalEnemyConfig>().FromInstance(globalEnemyConfig).AsSingle();
             Container.Bind<PlayerConfig>().FromInstance(playerConfig).AsSingle();
             Container.Bind<PrefabConfig>().FromInstance(prefabConfig).AsSingle();
+            Container.Bind<LevelConfig>().FromInstance(levelConfig).AsSingle();
         }
     }
 }

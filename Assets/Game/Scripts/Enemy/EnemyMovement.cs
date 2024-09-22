@@ -9,15 +9,14 @@ using Random = UnityEngine.Random;
 
 namespace Game.Scripts.Enemy
 {
-    public class EnemyMovement: BaseMovement
+    public class EnemyMovement : BaseMovement
     {
         private IPlayerProvider _playerProvider;
         private GlobalEnemyConfig _globalEnemyConfig;
 
-        private CancellationTokenSource cancellationTokenSource;
 
         private float _moveSpeed;
-        
+
         public MoveResult MoveResult { get; private set; }
 
         [Inject]
@@ -29,33 +28,35 @@ namespace Game.Scripts.Enemy
 
         private void Start()
         {
-            _moveSpeed = Random.Range(_movementConfig.enemyWalkMaxSpeed - _movementConfig.walkSpeedSelectRange, _movementConfig.enemyWalkMaxSpeed + _movementConfig.walkSpeedSelectRange);
+            _moveSpeed = Random.Range(_movementConfig.enemyWalkMaxSpeed - _movementConfig.walkSpeedSelectRange,
+                _movementConfig.enemyWalkMaxSpeed + _movementConfig.walkSpeedSelectRange);
+            MoveResult = MoveResult.Cancelled;
         }
 
         public async UniTask MoveTowardPlayer(AttackState attackState, CancellationToken token)
         {
             var distanceToDestination = _globalEnemyConfig.attackDistance[attackState];
-            await Move(distanceToDestination,token);
+            await Move(distanceToDestination, token);
         }
 
-        private async UniTask Move(int distanceToDestination, CancellationToken token)
+        public void ResetVelocity() => rb.velocity = Vector2.zero;
+
+        private async UniTask Move(float distanceToDestination, CancellationToken token)
         {
-            cancellationTokenSource = new CancellationTokenSource();
-            var linkedTokenSource = CancellationTokenSource.CreateLinkedTokenSource(token, cancellationTokenSource.Token);
-            
             while (GetDistanceToDestination(_playerProvider.Position) > distanceToDestination)
             {
                 var direction = (_playerProvider.Position - transform.position).normalized;
-                
-                SetVelocity(direction * (_moveSpeed  * Time.deltaTime));
+
+                SetVelocity(direction * _moveSpeed);
                 SetAnimationValue(direction.x, direction.y);
                 RotateTowardVector(direction);
-                
-                await UniTask.Delay(400,cancellationToken:linkedTokenSource.Token);
+                await UniTask.NextFrame(cancellationToken: token);
             }
 
+            Debug.Log(GetDistanceToDestination(_playerProvider.Position));
+
             SetVelocity(Vector2.zero);
-            SetAnimationValue(0,0,1f);
+            SetAnimationValue(0, 0, 1f);
             MoveResult = MoveResult.OnDestination;
         }
     }
@@ -63,6 +64,6 @@ namespace Game.Scripts.Enemy
     public enum MoveResult
     {
         OnDestination,
-        CancelledByDeath
+        Cancelled
     }
 }

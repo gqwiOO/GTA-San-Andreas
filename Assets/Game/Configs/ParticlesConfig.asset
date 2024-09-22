@@ -16,7 +16,7 @@ MonoBehaviour:
     SerializedFormat: 2
     SerializedBytes: 
     ReferencedUnityObjects:
-    - {fileID: 198622291796059046, guid: 96391347d61465749ab6685093df1b02, type: 3}
+    - {fileID: 198289660349720170, guid: bd770cecbba197a4d84e90e1a0d86ef3, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -24,12 +24,12 @@ MonoBehaviour:
     SerializationNodes:
     - Name: particles
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Game.Scripts.Factories.ParticleId,
+      Data: 0|System.Collections.Generic.Dictionary`2[[Game.Scripts.Mechanics.Particle.ParticleId,
         Assembly-CSharp],[UnityEngine.ParticleSystem, UnityEngine.ParticleSystemModule]],
         mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.Scripts.Factories.ParticleId,
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.Scripts.Mechanics.Particle.ParticleId,
         Assembly-CSharp]], mscorlib
     - Name: 
       Entry: 12

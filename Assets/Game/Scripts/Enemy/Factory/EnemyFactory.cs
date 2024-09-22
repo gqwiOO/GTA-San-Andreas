@@ -18,9 +18,9 @@ namespace Game.Scripts.Enemy.Factory
             _prefabConfig = prefabConfig;
         }
         
-        public EnemyAttackObject Create(AttackObjectData attackObjectData, Vector2 position, Transform parent = null)
+        public EnemyAttackObject Create(AttackObjectData attackObjectData, Vector3 position, Transform parent = null)
         {
-            var enemyAttackObject = Object.Instantiate(_prefabConfig.enemyPrefab, position, quaternion.identity,parent);
+            var enemyAttackObject = Object.Instantiate(_prefabConfig.EnemyPrefab, position, quaternion.identity,parent);
             enemyAttackObject.Init(attackObjectData);
             _diContainer.InjectGameObjectForComponent<EnemyAttackObject>(enemyAttackObject.gameObject);
             return enemyAttackObject;

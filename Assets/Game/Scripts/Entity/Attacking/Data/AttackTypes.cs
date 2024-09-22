@@ -1,8 +1,8 @@
-﻿namespace Game.Scripts.Entity.Attacking
+﻿namespace Game.Scripts.Entity.Attacking.Data
 {
     public static class AttackTypes
     {
         public static readonly float MeleeAttack = 0;
-        public static readonly float MagicAttack = 1;
+        public static readonly float RangeAttack = 0.5f;
     }
 }

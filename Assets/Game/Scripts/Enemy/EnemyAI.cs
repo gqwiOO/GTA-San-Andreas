@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Game.Scripts.Enemy.Config;
 using Game.Scripts.Entity.Attacking;
 using Game.Scripts.Mechanics;
+using Game.Scripts.Mechanics.Combat.ReceiveDamage;
 using UnityEngine;
 using Zenject;
 
@@ -18,6 +19,8 @@ namespace Game.Scripts.Enemy
 
         private CancellationTokenSource _disableAiCancellationTokenSource;
 
+        public AttackState AttackState { get; private set; }
+
         [Inject]
         private void Construct(GlobalEnemyConfig globalEnemyConfig)
         {
@@ -27,30 +30,45 @@ namespace Game.Scripts.Enemy
         private void Start()
         {
             _disableAiCancellationTokenSource = new CancellationTokenSource();
-            AiLogic(_disableAiCancellationTokenSource.Token).Forget();
             attackObject.OnDied += DisableLogic_OnDied;
+
+            AttackState = Random.Range(0, 1f) < _globalEnemyConfig.rangeEnemyChange ? AttackState.Range : AttackState.Melee;
+            // AttackState = AttackState.Melee;
+            AttackState = AttackState.Range;
+            
+            AiLogic(_disableAiCancellationTokenSource.Token).Forget();
+            
+            attackControl.SetWeapon(AttackState == AttackState.Melee);
+            
         }
 
         private void DisableLogic_OnDied(AttackObject _)
         {
             _disableAiCancellationTokenSource.Cancel();
+            enemyMovement.ResetVelocity();
         }
 
         private async UniTask AiLogic(CancellationToken token)
         {
             while (true)
             {
-                await enemyMovement.MoveTowardPlayer(AttackState.Melee, token);
+                await enemyMovement.MoveTowardPlayer(AttackState, token);
                 if (enemyMovement.MoveResult == MoveResult.OnDestination)
+                {
                     Attack();
+                    Debug.Log("OnDestination");
+                }
 
-                await UniTask.Delay(1000, cancellationToken: token);
+                await UniTask.Yield( cancellationToken: token);
             }
         }
 
         private void Attack()
         {
-            attackControl.AttackMelee(new AttackData(_globalEnemyConfig.meleeDamage,this.gameObject,_globalEnemyConfig.teamTag));
+            if(AttackState == AttackState.Range)
+                attackControl.RangeAttack(new AttackData(_globalEnemyConfig.rangeDamage,this.gameObject,_globalEnemyConfig.AttackObjectData.TeamTag));
+            else
+                attackControl.AttackMelee(new AttackData(_globalEnemyConfig.meleeDamage,this.gameObject,_globalEnemyConfig.AttackObjectData.TeamTag));
         }
     }
 

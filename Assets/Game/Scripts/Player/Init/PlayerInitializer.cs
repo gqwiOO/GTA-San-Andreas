@@ -1,5 +1,6 @@
 ﻿using System;
 using Game.Scripts.Mechanics;
+using Game.Scripts.Mechanics.Combat.ReceiveDamage;
 using Game.Scripts.Player.Config;
 using Game.Scripts.Services.PlayerProvider;
 using UnityEngine;

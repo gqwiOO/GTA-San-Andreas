@@ -14,8 +14,8 @@ TagManager:
   - UI
   - AttackCollider
   - ReceiveDamageCollider
-  - 
-  - 
+  - Ammunition
+  - Borders
   - 
   - 
   - 

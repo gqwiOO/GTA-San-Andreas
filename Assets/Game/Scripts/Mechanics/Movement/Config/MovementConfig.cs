@@ -8,12 +8,11 @@ namespace Game.Scripts.Mechanics.Movement.Config
     {
         public float walkMaxSpeed;
         public double minAnimationMoveValue;
-        public float walkToRunTranslation;
-        public float maxRotationDegreesDelta;
         public float walkMaxAnimValue;
         
         [Header("Enemy")]
         public float enemyWalkMaxSpeed = 2000f;
+        public float distanceToMeleeAttackByY = 0.2f;
 
         public float walkSpeedSelectRange = 50f;
     }

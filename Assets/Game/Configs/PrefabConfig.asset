@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b51d0f204641718b56e27bec8137e5, type: 3}
   m_Name: PrefabConfig
   m_EditorClassIdentifier: 
-  <enemyPrefab>k__BackingField: {fileID: 5926912511054369998, guid: 26313c51375d4cb41be16a7b2aff62af, type: 3}
+  <ArrowPrefab>k__BackingField: {fileID: 1817897171089147876, guid: 3c3b23338608939449229d02ec112a44, type: 3}
+  <EnemyPrefab>k__BackingField: {fileID: 5926912511054369998, guid: 26313c51375d4cb41be16a7b2aff62af, type: 3}

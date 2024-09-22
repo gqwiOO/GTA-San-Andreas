@@ -12,7 +12,6 @@ namespace Game.Scripts.Player.Config
 
         public AttackObjectData AttackObjectData;
         
-        public TeamTag teamTag;
     }
 
     public enum TeamTag

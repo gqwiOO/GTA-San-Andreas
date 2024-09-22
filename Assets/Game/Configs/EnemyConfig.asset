@@ -24,7 +24,7 @@ MonoBehaviour:
     - Name: attackDistance
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[Game.Scripts.Enemy.AttackState,
-        Assembly-CSharp],[System.Int32, mscorlib]], mscorlib
+        Assembly-CSharp],[System.Single, mscorlib]], mscorlib
     - Name: comparer
       Entry: 7
       Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Game.Scripts.Enemy.AttackState,
@@ -48,8 +48,8 @@ MonoBehaviour:
       Entry: 3
       Data: 0
     - Name: $v
-      Entry: 3
-      Data: 3
+      Entry: 4
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
@@ -60,8 +60,8 @@ MonoBehaviour:
       Entry: 3
       Data: 1
     - Name: $v
-      Entry: 3
-      Data: 6
+      Entry: 4
+      Data: 10
     - Name: 
       Entry: 8
       Data: 
@@ -71,10 +71,11 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  attackDelayMilliseconds: 1000
+  attackDelayMilliseconds: 1500
   meleeDamage: 10
   rangeDamage: 8
+  rangeEnemyChange: 0.3
   AttackObjectData:
     <MaxHp>k__BackingField: 200
+    TeamTag: 1
     canReceiveDamageFrom: 00000000
-  teamTag: 1
