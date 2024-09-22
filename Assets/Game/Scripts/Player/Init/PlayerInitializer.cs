@@ -1,8 +1,14 @@
 ﻿using System;
+using Game.Scripts.Containers;
 using Game.Scripts.Mechanics;
+using Game.Scripts.Mechanics.Combat.Data;
 using Game.Scripts.Mechanics.Combat.ReceiveDamage;
+using Game.Scripts.Mechanics.Upgrades;
+using Game.Scripts.Mechanics.Upgrades.Modifiers;
 using Game.Scripts.Player.Config;
 using Game.Scripts.Services.PlayerProvider;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -10,22 +16,55 @@ namespace Game.Scripts.Player.Init
 {
     public class PlayerInitializer: MonoBehaviour
     {
-        [SerializeField] private AttackObject attackObject;
+        [SerializeField] private Transform playerSpawnPoint;
+        [SerializeField] private UpgradeModifier upgradeModifier;
         
         private IPlayerProvider _playerProvider;
         private PlayerConfig _playerConfig;
+        private PrefabConfig _prefabConfig;
+        private ParentContainer _parentContainer;
+        private DiContainer _diContainer;
+        private CamerasContainer _camerasContainer;
 
         [Inject]
-        private void Construct(IPlayerProvider playerProvider, PlayerConfig playerConfig)
+        private void Construct(DiContainer diContainer, IPlayerProvider playerProvider, PlayerConfig playerConfig,
+            PrefabConfig prefabConfig, ParentContainer parentContainer, CamerasContainer camerasContainer)
         {
+            _camerasContainer = camerasContainer;
+            _diContainer = diContainer;
+            _parentContainer = parentContainer;
+            _prefabConfig = prefabConfig;
             _playerConfig = playerConfig;
             _playerProvider = playerProvider;
         }
 
-        private void Awake()
+
+        public void SpawnPlayer()
         {
-            _playerProvider.Init(gameObject);
-            attackObject.Init(_playerConfig.AttackObjectData);
+            var instance = Instantiate(_prefabConfig.PlayerPrefab, playerSpawnPoint.position, quaternion.identity,
+                _parentContainer.EntityContainer);
+            
+            _diContainer.InjectGameObject(instance.gameObject);
+
+            _camerasContainer.DefaultCamera.Follow = instance.transform;
+            
+            _playerProvider.Init(instance.gameObject);
+            var playerConfigAttackObjectData = GetModifiedAttackObjectData(_playerConfig.entityData);
+            instance.Init(playerConfigAttackObjectData);
+        }
+
+        private EntityData GetModifiedAttackObjectData(EntityData entityData)
+        {
+            var playerConfigAttackObjectData = entityData;
+            playerConfigAttackObjectData.MaxHp =
+                upgradeModifier.Modify(UpgradeType.Health, playerConfigAttackObjectData.MaxHp);
+            
+            playerConfigAttackObjectData.meleeDamage =
+                upgradeModifier.Modify(UpgradeType.MeleeAttack, playerConfigAttackObjectData.meleeDamage);
+            
+            playerConfigAttackObjectData.rangeDamage =
+                upgradeModifier.Modify(UpgradeType.RangeAttack, playerConfigAttackObjectData.rangeDamage);
+            return playerConfigAttackObjectData;
         }
     }
 }

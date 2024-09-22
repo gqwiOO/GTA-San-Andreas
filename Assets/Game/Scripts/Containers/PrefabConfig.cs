@@ -1,7 +1,7 @@
 ﻿using Game.Scripts.Enemy;
 using Game.Scripts.Mechanics.Combat.Attack.Range;
+using Game.Scripts.Mechanics.Combat.ReceiveDamage;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Game.Scripts.Containers
 {
@@ -10,5 +10,6 @@ namespace Game.Scripts.Containers
     {
         [field: SerializeField] public Arrow ArrowPrefab { get; private set; }
         [field: SerializeField] public EnemyAttackObject EnemyPrefab { get; private set; }
+        [field: SerializeField] public AttackObject PlayerPrefab { get; private set; }
     }
 }

@@ -53,7 +53,6 @@ namespace Game.Scripts.Enemy
                 await UniTask.NextFrame(cancellationToken: token);
             }
 
-            Debug.Log(GetDistanceToDestination(_playerProvider.Position));
 
             SetVelocity(Vector2.zero);
             SetAnimationValue(0, 0, 1f);

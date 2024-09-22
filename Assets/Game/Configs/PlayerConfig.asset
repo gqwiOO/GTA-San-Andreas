@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba4e78951eef43dc8aa70959229eb68d, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  meleeDamage: 15
-  rangeDamage: 10
-  AttackObjectData:
-    <MaxHp>k__BackingField: 400
+  entityData:
+    <MaxHp>k__BackingField: 200
+    <meleeDamage>k__BackingField: 20
+    <rangeDamage>k__BackingField: 10
+    TeamTag: 0
     canReceiveDamageFrom: 01000000
-  teamTag: 0

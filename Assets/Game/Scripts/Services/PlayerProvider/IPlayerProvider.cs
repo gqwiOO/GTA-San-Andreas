@@ -5,6 +5,8 @@ namespace Game.Scripts.Services.PlayerProvider
     public interface IPlayerProvider
     {
         Vector3 Position { get; }
+        bool Initialized { get; }
+
         void Init(GameObject gameObject);
     }
 }

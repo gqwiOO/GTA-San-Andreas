@@ -12,7 +12,7 @@ namespace Game.Scripts.Mechanics.Hp
         
         public event Action<float> OnPercentHpChanged;
 
-        public Hp(int MaxHp)
+        public Hp(float MaxHp)
         {
             MaxValue = MaxHp;
             Current = MaxValue;
@@ -27,7 +27,6 @@ namespace Game.Scripts.Mechanics.Hp
                 OnDied?.Invoke();
             }
             OnPercentHpChanged?.Invoke(Current / MaxValue);
-            
         }
 
         public void Heal(float value)
