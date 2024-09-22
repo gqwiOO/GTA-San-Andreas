@@ -5,6 +5,7 @@ using Game.Scripts.Mechanics.Combat.Data;
 using Game.Scripts.Mechanics.Combat.ReceiveDamage;
 using Game.Scripts.Mechanics.Upgrades;
 using Game.Scripts.Mechanics.Upgrades.Modifiers;
+using Game.Scripts.Player.Attacking;
 using Game.Scripts.Player.Config;
 using Game.Scripts.Services.PlayerProvider;
 using Unity.Mathematics;
@@ -49,8 +50,9 @@ namespace Game.Scripts.Player.Init
             _camerasContainer.DefaultCamera.Follow = instance.transform;
             
             _playerProvider.Init(instance.gameObject);
-            var playerConfigAttackObjectData = GetModifiedAttackObjectData(_playerConfig.entityData);
-            instance.Init(playerConfigAttackObjectData);
+            var modifiedEntityData = GetModifiedAttackObjectData(_playerConfig.entityData);
+            instance.GetComponent<PlayerAttackingControl>().SetEntityData(modifiedEntityData);
+            instance.Init(modifiedEntityData);
         }
 
         private EntityData GetModifiedAttackObjectData(EntityData entityData)

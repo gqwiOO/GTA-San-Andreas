@@ -62,7 +62,7 @@ namespace Game.Scripts.Enemy
                 await enemyMovement.MoveTowardPlayer(SetAttackState, token);
                 Attack();
 
-                await UniTask.Yield( cancellationToken: token);
+                await UniTask.Delay(_globalEnemyConfig.attackDelayMilliseconds, cancellationToken: token);
             }
         }
 

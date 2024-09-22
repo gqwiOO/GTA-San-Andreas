@@ -71,7 +71,7 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
-  attackDelayMilliseconds: 1500
+  attackDelayMilliseconds: 1000
   rangeEnemyChange: 0.3
   entityData:
     <MaxHp>k__BackingField: 200

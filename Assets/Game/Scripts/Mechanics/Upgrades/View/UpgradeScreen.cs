@@ -9,7 +9,7 @@ namespace Game.Scripts.Mechanics.Upgrades.View
     {
         [SerializeField] private UIButton backButton;
 
-        private void Start() => backButton.OnClick += Hide;
-        private void OnDestroy() => backButton.OnClick -= Hide;
+        protected override void StartHook() => backButton.OnClick += Hide;
+        protected override void OnDestroyHook() => backButton.OnClick -= Hide;
     }
 }

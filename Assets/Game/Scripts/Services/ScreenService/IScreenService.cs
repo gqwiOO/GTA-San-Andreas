@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks.Triggers;
 using Game.Scripts.Mechanics.Screen;
 using UnityEngine;
 
@@ -35,14 +36,20 @@ namespace Game.Scripts.Services.ScreenService
 
         public void AddScreen(UIScreen screen)
         {
-            if (_screens.ContainsValue(screen))
-            {
-                Debug.LogError($"Screen {screen.GetType()} already in dictionary");
+            if (_screens.ContainsKey(screen.GetType()))
                 return;
-            }
+            
             _screens.Add(screen.GetType(),screen);
+            screen.OnDestroyed += RemoveScreen_OnDestroy;
         }
 
+        private void RemoveScreen_OnDestroy(UIScreen screen)
+        {
+            RemoveScreen(screen);
+            screen.OnDestroyed -= RemoveScreen_OnDestroy;
+        }
+
+        private void RemoveScreen(UIScreen screen) => _screens.Remove(screen.GetType());
     }
 
     public interface IScreenService
@@ -51,7 +58,6 @@ namespace Game.Scripts.Services.ScreenService
         
         void Hide();
         
-
         void AddScreen(UIScreen screen);
         
         UIScreen Current { get; }

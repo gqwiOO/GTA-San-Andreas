@@ -11,6 +11,15 @@ namespace Game.Scripts.Mechanics.Screen
         private IScreenService _screenService;
         public void Show() => gameObject.SetActive(true);
         public void Hide() => gameObject.SetActive(false);
+        public event Action<UIScreen> OnDestroyed;
+
+        private void Start() => StartHook();
+
+        private void OnDestroy()
+        {
+            OnDestroyed?.Invoke(this);
+            OnDestroyHook();
+        }
 
 
         [Inject]
@@ -20,5 +29,9 @@ namespace Game.Scripts.Mechanics.Screen
             
             _screenService.AddScreen(this);
         }
+
+        protected virtual void StartHook() { }
+
+        protected virtual void OnDestroyHook() { }
     }
 }
