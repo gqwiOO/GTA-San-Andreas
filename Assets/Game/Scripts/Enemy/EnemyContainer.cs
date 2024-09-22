@@ -2,7 +2,6 @@
 using System.Linq;
 using Game.Scripts.Enemy.Config;
 using Game.Scripts.Enemy.Factory;
-using Game.Scripts.Mechanics;
 using Game.Scripts.Mechanics.Combat.ReceiveDamage;
 using Game.Scripts.Mechanics.Level;
 using Game.Scripts.Services.PlayerProvider;

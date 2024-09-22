@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Game.Scripts.Mechanics.Combat.Data;
-using Game.Scripts.Player.Config;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;

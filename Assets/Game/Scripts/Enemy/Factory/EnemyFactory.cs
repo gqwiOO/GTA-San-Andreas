@@ -9,7 +9,7 @@ namespace Game.Scripts.Enemy.Factory
     public class EnemyFactory
     {
         private readonly PrefabConfig _prefabConfig;
-        private DiContainer _diContainer;
+        private readonly DiContainer _diContainer;
 
         [Inject]
         public EnemyFactory(PrefabConfig prefabConfig, DiContainer diContainer)

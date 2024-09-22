@@ -21,7 +21,7 @@ namespace Game.Scripts.Mechanics.Gameplay
             _sceneLoader = sceneLoader;
         }
         
-        protected override void StartHook() => lobbyButton.OnClick += ShowLobbyOnClick;
+        protected override void AwakeHook() => lobbyButton.OnClick += ShowLobbyOnClick;
         private void ShowLobbyOnClick() => _sceneLoader.Load(Constants.LobbySceneName);
         protected override void OnDestroyHook() => lobbyButton.OnClick -= ShowLobbyOnClick;
     }

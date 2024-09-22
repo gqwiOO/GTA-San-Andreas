@@ -23,19 +23,19 @@ namespace Game.Scripts.Mechanics.Menu
             _screenService = screenService;
             _sceneLoader = sceneLoader;
         }
-        private void Start()
+        protected override void AwakeHook()
         {
             PlayButton.OnClick += LoadGameplayScene_OnClick;
             UpgradeButton.OnClick += EnterUpgrade_OnClick;
         }
 
-        private void OnDestroy()
+        protected override void OnDestroyHook()
         {
             PlayButton.OnClick -= LoadGameplayScene_OnClick;
             UpgradeButton.OnClick -= EnterUpgrade_OnClick;
         }
 
-        private void EnterUpgrade_OnClick() => _screenService.Show<UpgradeScreen>();
+        private void EnterUpgrade_OnClick() => _screenService.Show<UpgradeScreen>(false);
 
         private void LoadGameplayScene_OnClick() => _sceneLoader.Load(Constants.GameplaySceneName);
     }

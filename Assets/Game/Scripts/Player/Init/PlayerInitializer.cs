@@ -49,7 +49,7 @@ namespace Game.Scripts.Player.Init
 
             _camerasContainer.DefaultCamera.Follow = instance.transform;
             
-            _playerProvider.Init(instance.gameObject);
+            _playerProvider.Init(instance);
             var modifiedEntityData = GetModifiedAttackObjectData(_playerConfig.entityData);
             instance.GetComponent<PlayerAttackingControl>().SetEntityData(modifiedEntityData);
             instance.Init(modifiedEntityData);

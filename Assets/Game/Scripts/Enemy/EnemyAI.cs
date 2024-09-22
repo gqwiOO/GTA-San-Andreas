@@ -1,12 +1,15 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Game.Scripts.Enemy.Config;
 using Game.Scripts.Entity.Attacking;
 using Game.Scripts.Mechanics;
+using Game.Scripts.Mechanics.Combat.Data;
 using Game.Scripts.Mechanics.Combat.ReceiveDamage;
 using Game.Scripts.Services.PlayerProvider;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace Game.Scripts.Enemy
 {
@@ -21,7 +24,7 @@ namespace Game.Scripts.Enemy
         private CancellationTokenSource _disableAiCancellationTokenSource;
         private IPlayerProvider _playerProvider;
 
-        public AttackState SetAttackState { get; private set; }
+        public AttackState AttackState { get; private set; }
 
         [Inject]
         private void Construct(GlobalEnemyConfig globalEnemyConfig, IPlayerProvider playerProvider)
@@ -37,15 +40,37 @@ namespace Game.Scripts.Enemy
             var tokenSource = CancellationTokenSource.CreateLinkedTokenSource(_disableAiCancellationTokenSource.Token,
                 gameObject.GetCancellationTokenOnDestroy());
             
-            attackObject.OnDied += DisableLogic_OnDied;
+            Subscriptions();
 
-            SetAttackState = Random.Range(0, 1f) < _globalEnemyConfig.rangeEnemyChange 
-                ? AttackState.Range 
-                : AttackState.Melee;
+            SetAttackState();
             
             AiLogic(tokenSource.Token).Forget();
             
-            attackControl.SetWeapon(SetAttackState == AttackState.Melee);
+            attackControl.SetWeapon(AttackState == AttackState.Melee);
+        }
+
+        private void Subscriptions()
+        {
+            attackObject.OnDied += DisableLogic_OnDied;
+            _playerProvider.OnDied += DisableLogic_OnDied;
+        }
+
+        private void OnDestroy()
+        {
+            Unsubscriptions();
+        }
+
+        private void Unsubscriptions()
+        {
+            attackObject.OnDied -= DisableLogic_OnDied;
+            _playerProvider.OnDied -= DisableLogic_OnDied;
+        }
+        
+        private void SetAttackState()
+        {
+            AttackState = Random.Range(0, 1f) < _globalEnemyConfig.rangeEnemyChange 
+                ? AttackState.Range 
+                : AttackState.Melee;
         }
 
         private void DisableLogic_OnDied(AttackObject _)
@@ -59,7 +84,7 @@ namespace Game.Scripts.Enemy
             await UniTask.WaitUntil(() => _playerProvider.Initialized, cancellationToken: token);
             while (true)
             {
-                await enemyMovement.MoveTowardPlayer(SetAttackState, token);
+                await enemyMovement.MoveTowardPlayer(AttackState, token);
                 Attack();
 
                 await UniTask.Delay(_globalEnemyConfig.attackDelayMilliseconds, cancellationToken: token);
@@ -68,16 +93,10 @@ namespace Game.Scripts.Enemy
 
         private void Attack()
         {
-            if(SetAttackState == AttackState.Range)
+            if(AttackState == AttackState.Range)
                 attackControl.RangeAttack(new AttackData(_globalEnemyConfig.entityData.rangeDamage,this.gameObject,_globalEnemyConfig.entityData.TeamTag));
             else
                 attackControl.AttackMelee(new AttackData(_globalEnemyConfig.entityData.meleeDamage,this.gameObject,_globalEnemyConfig.entityData.TeamTag));
         }
-    }
-
-    public enum AttackState
-    {
-        Melee,
-        Range
     }
 }

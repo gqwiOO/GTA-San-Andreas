@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks.Triggers;
 using Game.Scripts.Mechanics.Screen;
-using UnityEngine;
 
 namespace Game.Scripts.Services.ScreenService
 {
